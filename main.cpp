@@ -13,6 +13,8 @@ struct Cloud {
 class Background {
 public:
     Background(SDL_Renderer* renderer) : renderer(renderer) {
+        castleRect = {100, 200, 600, 300};  
+
         clouds = {
             {50, 100, 30},
             {300, 150, 20},
@@ -21,16 +23,16 @@ public:
     }
 
     void renderBackground() {
-        // Dibujar el fondo y el castillo
-
-        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255); 
+        SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
         SDL_RenderClear(renderer);
 
-        SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255);
+        SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255); 
         SDL_Rect groundRect = {0, WINDOW_HEIGHT - 100, WINDOW_WIDTH, 100};
         SDL_RenderFillRect(renderer, &groundRect);
 
-        drawCastle();
+        
+        SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255); 
+        SDL_RenderFillRect(renderer, &castleRect);
     }
 
     void renderClouds(float deltaTime) {
@@ -38,7 +40,7 @@ public:
         for (auto& cloud : clouds) {
             cloud.x += cloud.speed * deltaTime;
             if (cloud.x > WINDOW_WIDTH) {
-                cloud.x = -100;  
+                cloud.x = -100; 
             }
             SDL_Rect cloudRect = {static_cast<int>(cloud.x), static_cast<int>(cloud.y), 100, 50};
             SDL_RenderFillRect(renderer, &cloudRect);
@@ -47,68 +49,8 @@ public:
 
 private:
     SDL_Renderer* renderer;
+    SDL_Rect castleRect;
     std::vector<Cloud> clouds;
-
-    void drawCastle() {
-        // Torre izquierda
-        SDL_SetRenderDrawColor(renderer, 169, 169, 169, 255);
-        SDL_Rect leftTowerBase = {150, 300, 100, 200};
-        SDL_RenderFillRect(renderer, &leftTowerBase);
-
-        // Torre central
-        SDL_Rect centerTowerBase = {325, 250, 150, 250};
-        SDL_RenderFillRect(renderer, &centerTowerBase);
-
-        // Torre derecha
-        SDL_Rect rightTowerBase = {550, 300, 100, 200};
-        SDL_RenderFillRect(renderer, &rightTowerBase);
-
-        // Puerta
-        SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255);
-        SDL_Rect door = {370, 400, 60, 100};
-        SDL_RenderFillRect(renderer, &door);
-
-        // Detalles en las torres (ventanas)
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_Rect leftWindow = {185, 350, 30, 50};
-        SDL_RenderFillRect(renderer, &leftWindow);
-        SDL_Rect rightWindow = {585, 350, 30, 50};
-        SDL_RenderFillRect(renderer, &rightWindow);
-
-        drawTowersAndFlags();
-    }
-
-    void drawTowersAndFlags() {
-        // Techo de la torre izquierda
-        SDL_SetRenderDrawColor(renderer, 255, 69, 0, 255); 
-        SDL_Rect leftRoof = {140, 250, 120, 50};
-        SDL_RenderFillRect(renderer, &leftRoof);
-
-        // Techo de la torre central
-        SDL_Rect centerRoof = {310, 200, 180, 50};
-        SDL_RenderFillRect(renderer, &centerRoof);
-
-        // Techo de la torre derecha
-        SDL_Rect rightRoof = {540, 250, 120, 50};
-        SDL_RenderFillRect(renderer, &rightRoof);
-
-        // Banderas
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); /
-        SDL_Rect leftFlagPole = {190, 220, 10, 30};
-        SDL_RenderFillRect(renderer, &leftFlagPole);
-        SDL_Rect centerFlagPole = {400, 170, 10, 30};
-        SDL_RenderFillRect(renderer, &centerFlagPole);
-        SDL_Rect rightFlagPole = {590, 220, 10, 30};
-        SDL_RenderFillRect(renderer, &rightFlagPole);
-
-        // Parte de la bandera
-        SDL_Rect leftFlag = {200, 220, 20, 10};
-        SDL_RenderFillRect(renderer, &leftFlag);
-        SDL_Rect centerFlag = {410, 170, 20, 10};
-        SDL_RenderFillRect(renderer, &centerFlag);
-        SDL_Rect rightFlag = {600, 220, 20, 10};
-        SDL_RenderFillRect(renderer, &rightFlag);
-    }
 };
 
 int main(int argc, char* argv[]) {
